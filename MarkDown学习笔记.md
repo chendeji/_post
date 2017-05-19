@@ -2,6 +2,7 @@
 title: MarkDown学习笔记
 date: 2017-04-29 17:55:43
 tags: [markdown]
+categories: [hexo]
 ---
 
 ### MarkDown语言入门
