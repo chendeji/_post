@@ -71,10 +71,136 @@ compile'com.tbruyelle.rxpermissions:rxpermissions:0.9.1@aar'
         .subscribe(new Action1<String>() {
             @Override
             public void call(String s) {
-
+				//对铺展开后的每一个数据进行处理
             }
         });
 ```
 
+## 线程切换
 
+上面的例子中都可以看到**".subscribeOn"** 和 **".observeOn"**这两个方法，第一次了解的时候，不明白，但是多用几次就能很明显的知道，subscribeOn这个是定义耗时操作的线程，observeOn是定义回调通知的线程。
 
+通过了解上面的几个API，就能用RxJava适应大部分的开发需求。
+
+## 延伸扩展 RxBus
+
+这里的控件之间交互通信的框架有很多，类似EventBus,otto。但是为了适配RxJava的代码，就用了这个框架，里面的发送事件的原理和android的Handler差不多。
+来点示例：
+```
+/**
+public class RxBus {
+
+//    private static volatile RxBus mInstance;
+    private SerializedSubject<Object, Object> mSubject;
+    private HashMap<String, CompositeSubscription> mSubscriptionMap;
+
+    public RxBus() {
+        mSubject = new SerializedSubject<>(PublishSubject.create());
+    }
+
+    // 这里使用Dagger来处理单例
+    /*
+    private RxBus() {
+        mSubject = new SerializedSubject<>(PublishSubject.create());
+    }
+
+    public static RxBus getInstance() {
+        if (mInstance == null) {
+            synchronized (RxBus.class) {
+                if (mInstance == null) {
+                    mInstance = new RxBus();
+                }
+            }
+        }
+        return mInstance;
+    }*/
+
+    /**
+     * 发送事件
+     *
+     * @param o
+     */
+    public void post(Object o) {
+        mSubject.onNext(o);
+    }
+
+    /**
+     * 返回指定类型的Observable实例
+     *
+     * @param type
+     * @param <T>
+     * @return
+     */
+    public <T> Observable<T> toObservable(final Class<T> type) {
+        return mSubject.ofType(type);
+    }
+
+    /**
+     * 是否已有观察者订阅
+     *
+     * @return
+     */
+    public boolean hasObservers() {
+        return mSubject.hasObservers();
+    }
+
+    /**
+     * 一个默认的订阅方法
+     *
+     * @param type
+     * @param next
+     * @param error
+     * @param <T>
+     * @return
+     */
+    public <T> Subscription doSubscribe(Class<T> type, Action1<T> next, Action1<Throwable> error) {
+        return toObservable(type)
+                // 加上背压处理，不然有些地方会有异常，关于背压参考这里：https://gold.xitu.io/post/582d413c8ac24700619cceed
+                .onBackpressureBuffer()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(next, error);
+    }
+
+    /**
+     * 保存订阅后的subscription
+     * @param o
+     * @param subscription
+     */
+    public void addSubscription(Object o, Subscription subscription) {
+        if (mSubscriptionMap == null) {
+            mSubscriptionMap = new HashMap<>();
+        }
+        String key = o.getClass().getName();
+        if (mSubscriptionMap.get(key) != null) {
+            mSubscriptionMap.get(key).add(subscription);
+        } else {
+            CompositeSubscription compositeSubscription = new CompositeSubscription();
+            compositeSubscription.add(subscription);
+            mSubscriptionMap.put(key, compositeSubscription);
+        }
+    }
+
+    /**
+     * 取消订阅
+     * @param o
+     */
+    public void unSubscribe(Object o) {
+        if (mSubscriptionMap == null) {
+            return;
+        }
+
+        String key = o.getClass().getName();
+        if (!mSubscriptionMap.containsKey(key)){
+            return;
+        }
+        if (mSubscriptionMap.get(key) != null) {
+            mSubscriptionMap.get(key).unsubscribe();
+        }
+
+        mSubscriptionMap.remove(key);
+    }
+}
+```
+
+这个是从一个开源项目中拷贝出来的代码，其中有些不合理的代码设计，但是不影响主体的实现事件控件之间交互的功能。可以用来入门学习。
