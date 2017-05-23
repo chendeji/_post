@@ -9,7 +9,8 @@ categories: [Android]
 近期在项目重构的过程中，同事建议使用RxJava来重构应用，从原先的面向过程的变成方式，变为响应式编程。这个是有很大的好处的。
 
 ## 引入RxJava
-```
+
+``` gradle
 //rxjava
 compile 'io.reactivex:rxjava:1.1.9'
 compile 'io.reactivex:rxandroid:1.2.1'
@@ -25,7 +26,7 @@ compile'com.tbruyelle.rxpermissions:rxpermissions:0.9.1@aar'
 1. **线程的调度**，这个优势，会让你的线程切换代码减少很多，最大的优点，也是我最喜欢的。
 
 2. **流式代码**，说这个太抽象，直接上示例。
-```
+``` java
         Observable.create(new Observable.OnSubscribe<Object>() {
             @Override
             public void call(Subscriber<? super Object> subscriber) {
@@ -45,7 +46,7 @@ compile'com.tbruyelle.rxpermissions:rxpermissions:0.9.1@aar'
 
 3. 还有一个比较大的优势，就是对嵌套机构的优化，这点其实可以归并到第二点，但是个人感觉有必要分出来。**多维铺展** 这个是我个人的总结而已，简单的来讲，就是可以对多维的数据进行展开，中间可以做很多的操作，例如过滤不正常的数据，或者将数据进行转换。在这里也是上点例子。
 
-```
+``` java
         Observable.just(isRefresh)
                 .filter(new Func1<Boolean, Boolean>() {
             @Override
@@ -86,8 +87,7 @@ compile'com.tbruyelle.rxpermissions:rxpermissions:0.9.1@aar'
 
 这里的控件之间交互通信的框架有很多，类似EventBus,otto。但是为了适配RxJava的代码，就用了这个框架，里面的发送事件的原理和android的Handler差不多。
 来点示例：
-```
-/**
+``` java
 public class RxBus {
 
 //    private static volatile RxBus mInstance;
@@ -204,3 +204,10 @@ public class RxBus {
 ```
 
 这个是从一个开源项目中拷贝出来的代码，其中有些不合理的代码设计，但是不影响主体的实现事件控件之间交互的功能。可以用来入门学习。
+
+以上是针对RxJava的入门学习，但是这个仅仅只是很小的一部分，剩余的还有很多，例如和Retrofit框架的搭配使用，还有在MVP设计思路中的实现，这个都需要很多的实践，也欢迎有志同道合的朋友能够一起学习互相联系。
+
+联系方式： 
+QQ:781571323
+wechat:18559176792
+
