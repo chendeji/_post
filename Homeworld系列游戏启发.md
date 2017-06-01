@@ -1,7 +1,8 @@
 ---
 title: Homeworld系列游戏启发
 date: 2017-05-26 10:55:43
-tags: [游戏,科幻,狂想]
+tags: [游戏]
+categories: [游戏]
 ---
 
 ## 推荐

@@ -1,7 +1,7 @@
 ---
 title: Fragment嵌套Fragment带来的问题
 date: 2017-05-19 15:46:19
-tags: [bug, Fragment]
+tags: [Bug, Fragment]
 categories: [Android]
 ---
 

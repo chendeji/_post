@@ -2,6 +2,7 @@
 title: 使用Github page配置个人博客
 date: 2017-04-24 11:43:07
 tags: [bolg, github]
+categories: [github]
 ---
 
 ## 具体配置注意点
