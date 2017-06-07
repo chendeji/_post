@@ -2,7 +2,7 @@
 title: Dagger注入框架入门概念理解
 date: 2017-06-06 10:08:50
 tags: [Android]
-categories: [Android, dagger]
+categories: [Android, Dagger]
 ---
 
 # 为什么要使用这个框架

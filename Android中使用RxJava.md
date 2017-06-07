@@ -2,7 +2,7 @@
 title: Android中使用RxJava
 date: 2017-05-19 16:44:49
 tags: [RxJava]
-categories: [Android]
+categories: [Android, RxJava]
 ---
 
 早期的代码由于没有考虑过度的控件添加带来的性能损耗，导致应用的体验非常的卡顿。
