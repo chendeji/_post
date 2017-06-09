@@ -99,7 +99,6 @@ function build_one
 --prefix=$PREFIX \
 --enable-shared \
 --disable-static \
---disable-doc \
 --disable-ffmpeg \
 --disable-ffplay \
 --disable-ffprobe \
@@ -141,7 +140,6 @@ function build_one
   --prefix=$PREFIX \
   --enable-shared \
   --disable-static \
-  --disable-doc \
   --disable-ffmpeg \
   --disable-ffplay \
   --disable-ffprobe \
