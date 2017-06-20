@@ -11,6 +11,8 @@ categories: [Android, JNI]
 ![支持底层代码](http://img.blog.csdn.net/20150913215746047)
 然后接着按Finish结束操作
 
+<!-- more -->
+
 接着将NDK中的头文件导入到项目中，支持项目中C/C++代码的引用
 ![](http://img.blog.csdn.net/20150913220306307)
 ![](http://img.blog.csdn.net/20150913220325399)
